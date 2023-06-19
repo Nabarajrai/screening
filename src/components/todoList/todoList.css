@@ -1,0 +1,45 @@
+.todoList-container {
+  margin-top: 9px;
+}
+.todoList-container ul {
+  list-style: none;
+}
+.todoList-container ul li {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0px;
+  color: #939393cc;
+}
+.custom-checkbox {
+  align-self: flex-start;
+}
+.todos-name {
+  flex: 1;
+  margin-left: 35px;
+  font-size: 15px;
+}
+.icon {
+  display: block;
+  color: #817979cc;
+  font-size: 18px;
+  cursor: pointer;
+}
+.paragraph-active {
+  text-decoration: line-through;
+}
+.icons {
+  display: flex;
+  gap: 5px;
+}
+.editing {
+  display: flex;
+  gap: 10px;
+}
+#edit {
+  border: none;
+  border-bottom: 2px solid #e0dbdbcc;
+  color: #848080cc;
+}
+#edit:focus {
+  outline: none;
+}
