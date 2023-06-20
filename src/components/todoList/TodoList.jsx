@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 import React, { useContext,useState ,useEffect} from "react";
 import { PropTypes } from "prop-types";
 import CustomRadio from "../customRadio/CustomRadio";
@@ -6,6 +7,8 @@ import { BiEdit } from "react-icons/bi";
 import { FiSave } from "react-icons/fi";
 import { TodosContext } from "../../context/TodoContext";
 import "./todoList.css";
+
+
 
 const TodoList = ({ todos }) => {
   const [selectTodo,setSelectTodo] = useState("");
@@ -33,10 +36,14 @@ const TodoList = ({ todos }) => {
         setSelectTodo(data.todo);
         return { ...data, isEditing: true };
       }
+      else{
+        return { ...data, isEditing: false };
+      }
       return data;
     });
     setTodoList(updateEditTodo);
   };
+  
   const handleChange = (e)=>{
     setNewTodo(e.target.value);
   }
