@@ -1,26 +1,35 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unreachable */
-import React, { useContext,useState ,useEffect} from "react";
-import { PropTypes } from "prop-types";
+import React, { useState, useEffect } from "react";
 import CustomRadio from "../customRadio/CustomRadio";
 import { AiFillDelete } from "react-icons/ai";
 import { BiEdit } from "react-icons/bi";
 import { FiSave } from "react-icons/fi";
-import { TodosContext } from "../../context/TodoContext";
 import "./todoList.css";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  deleteTodoAction,
+  completedTodoAction,
+  editTodoAction,
+  saveTodoAction,
+} from "../../actions/AddTodo.action";
 
+const TodoList = () => {
+  const [selectTodo, setSelectTodo] = useState("");
+  const [newTodo, setNewTodo] = useState();
 
+  const dispatch = useDispatch();
+  const { todos } = useSelector(state => state.todos);
 
-const TodoList = ({ todos }) => {
-  const [selectTodo,setSelectTodo] = useState("");
-  const [newTodo,setNewTodo] = useState();
-  const { setTodoList } = useContext(TodosContext);
-  useEffect(()=>{
+  useEffect(() => {
     setNewTodo(selectTodo);
-  },[selectTodo])
+  }, [selectTodo]);
+
   const DeleteTodo = id => {
     const newTodos = todos.filter(todo => todo.id !== id);
-    setTodoList(newTodos);
+    dispatch(deleteTodoAction(newTodos));
   };
+
   const handleCheckMark = (e, id) => {
     const updateTodos = todos.map(data => {
       if (data.id === id) {
@@ -28,34 +37,35 @@ const TodoList = ({ todos }) => {
       }
       return data;
     });
-    setTodoList(updateTodos);
+    dispatch(completedTodoAction(updateTodos));
   };
+
   const handleEditTodo = id => {
     const updateEditTodo = todos.map(data => {
-      if (data.id === id) {   
+      if (data.id === id) {
         setSelectTodo(data.todo);
         return { ...data, isEditing: true };
-      }
-      else{
+      } else {
         return { ...data, isEditing: false };
+      }
+    });
+    dispatch(editTodoAction(updateEditTodo));
+  };
+
+  const handleChange = e => {
+    setNewTodo(e.target.value);
+  };
+
+  const saveTodo = id => {
+    const newTodos = todos.map(data => {
+      if (data.id === id) {
+        return { ...data, todo: newTodo, isEditing: false };
       }
       return data;
     });
-    setTodoList(updateEditTodo);
+    dispatch(saveTodoAction(newTodos));
   };
-  
-  const handleChange = (e)=>{
-    setNewTodo(e.target.value);
-  }
-  const saveTodo=(id)=>{
-     const newTodos  = todos.map(data=>{
-      if(data.id === id){
-        return {...data,todo: newTodo,isEditing: false};
-      }
-      return data;
-    })
-    setTodoList(newTodos); 
-  };
+
   return (
     <div className="todoList-container">
       <ul>
@@ -82,7 +92,7 @@ const TodoList = ({ todos }) => {
                       onChange={e => handleChange(e)}
                       value={newTodo}
                     />
-                    <span className="icon" onClick={()=>saveTodo(data.id)}>
+                    <span className="icon" onClick={() => saveTodo(data.id)}>
                       <FiSave className="save" />
                     </span>
                   </div>
@@ -107,7 +117,3 @@ const TodoList = ({ todos }) => {
 };
 
 export default TodoList;
-
-TodoList.propTypes = {
-  todos: PropTypes.array.isRequired,
-};
